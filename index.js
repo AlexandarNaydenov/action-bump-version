@@ -8,8 +8,10 @@ try {
     const data = fs.readFileSync('./VERSION', 'utf8');
     let version = data;
     //Incremention version
-    version = semver.inc(version, 'major');
+    version = semver.inc(version, 'minor');
     core.setOutput('output-version', version);
+
+    fs.writeFileSync('./VERSION', version);
 
 } catch (error) {
     core.setFailed(error.message);
