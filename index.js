@@ -6,7 +6,7 @@ const fetch = require("node-fetch");
 try {
     let version = core.getInput('input-version');
     console.log(version);
-    fetch('VERSION')
+    fetch('./VERSION')
         .then(response => response.text())
         .then(text => {
             version = text;
