@@ -1,0 +1,13 @@
+name : 'Bump version'
+description: 'JS action for autoupdate version based on the commit message'
+inputs:
+  input-version:  # id of input
+    description: 'Input version'
+    required: false
+    default: '1.0.0'
+outputs:
+  output-version: # id of output
+    description: 'Output version'
+runs:
+  using: 'node12'
+  main: 'index.js'
