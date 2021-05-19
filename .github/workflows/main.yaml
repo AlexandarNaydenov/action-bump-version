@@ -11,6 +11,6 @@ jobs:
         id: input
         uses: ./
         with:
-          who-to-greet: '3.0.0'
+          input-version: '3.0.0'
       - name: Get the output time
         run: echo "The time was ${{ steps.input.outputs.output-version }}"
