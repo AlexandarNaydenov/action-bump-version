@@ -4,10 +4,11 @@ const semver = require('semver');
 const fs = require('fs');
 
 try {
-    let version = core.getInput('input-version');
-    console.log(version);
+    //reading version from VERSION file
     const data = fs.readFileSync('./VERSION', 'utf8');
-    version = data;
+    let version = data;
+    //Incremention version
+    version = semver.inc(version, 'major');
     core.setOutput('output-version', version);
 
 } catch (error) {
