@@ -6,7 +6,11 @@ const semver = require('semver');
 try {
     let version = core.getInput('input-version');
     console.log(version);
-    version = semver.inc(version, 'major');
+    fetch('VERSION')
+        .then(response => response.text())
+        .then(text => {
+            version = text;
+        })
     core.setOutput('output-version', version);
 
 } catch (error) {
