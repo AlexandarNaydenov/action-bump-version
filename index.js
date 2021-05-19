@@ -8,6 +8,7 @@ try {
     const data = fs.readFileSync('./VERSION', 'utf8');
     let version = data;
     //Incremention version
+    console.log('Commit message' + core.getInput('commit-message'));
     version = semver.inc(version, 'minor');
     core.setOutput('output-version', version);
 
