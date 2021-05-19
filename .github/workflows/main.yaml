@@ -13,4 +13,4 @@ jobs:
         with:
           input-version: '3.0.0'
       - name: Get the output time
-        run: echo "The time was ${{ steps.input.outputs.output-version }}"
+        run: echo "The output version is ${{ steps.input.outputs.output-version }}"
