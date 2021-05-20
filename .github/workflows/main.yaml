@@ -10,5 +10,5 @@ jobs:
       - name: Input 
         id: input
         uses: ./
-      - name: Get the output time
+      - name: Get the output version
         run: echo "The output version is ${{ steps.input.outputs.output-version }}"
