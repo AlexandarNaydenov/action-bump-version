@@ -24,7 +24,8 @@ Example :
         run: echo "The output version is ${{ steps.version-bump.outputs.output-version }}"
 ```
 
-* You can specify your own key words into inputs example : 
+* You can specify your own key words into inputs example : *
+
 ** Use only capital words ** 
 ```yaml
       - name: Automated Version Bump 
