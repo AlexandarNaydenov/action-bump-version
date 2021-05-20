@@ -66,6 +66,7 @@ function updateTypeCheck(message){
         }     
     })
    
+    return update;
     console.log('String to up : '+String(message).toUpperCase());
     console.log('Update : ' + update);
 }
