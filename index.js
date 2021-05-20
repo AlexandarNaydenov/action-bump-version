@@ -23,14 +23,18 @@ try {
     console.log('Message : ' + message);
 
     let majorWords = core.getInput('major-flags-words');
+    let majorWordsArray = majorWords.split(',');
     let update;
-    if(String(message).toUpperCase().includes(majorWords)){
-        update = 'major';
-    }
+    majorWordsArray.forEach(word => {
+        if(String(message).toUpperCase().includes(word)){
+            update = 'major';
+        }     
+    })
+   
     console.log('String to up : '+String(message).toUpperCase());
     console.log('Update : ' + update);
     version = semver.inc(version, update);
-    console.log('Version : ' + version);
+    console.log('Version after increment : ' + version);
 }
 catch (error) {
     core.setFailed(error.message);
