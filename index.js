@@ -4,7 +4,9 @@ const semver = require('semver');
 const fs = require('fs');
 
 let initialVersion = getVersionFromFile('./VERSION');
+console.log("Initial Version from VERSION file is : "+initialVersion);
 let incrementedVersion = incrementBasedOnCommitMessage(initialVersion);
+console.log("Incremented version based on commit message is : "+incrementedVersion);
 setOutputAndChangeFile(incrementedVersion, './VERSION');
 
 function getVersionFromFile(filePath){
@@ -43,7 +45,6 @@ function incrementBasedOnCommitMessage(currVersion){
         }
         else {
             incrementedVersion = semver.inc(currVersion, update);
-            console.log('Version after increment : ' + incrementedVersion);
             return incrementedVersion;
         }
     }
