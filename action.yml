@@ -4,7 +4,7 @@ inputs:
   major-flags-words:  # id of input
     description: 'Words that suggest update is Major'
     required: false
-    default: 'MAJOR'
+    default: 'MAJOR, BIG'
   minor-flags-words:  # id of input
     description: 'Words that suggest update is Minor'
     required: false
