@@ -27,6 +27,7 @@ try {
     if(String(message).toUpperCase().includes(majorWords)){
         update = 'major';
     }
+    console.log('String to up : '+String(message).toUpperCase());
     console.log('Update : ' + update);
     version = semver.inc(version, update);
     console.log('Version : ' + version);
