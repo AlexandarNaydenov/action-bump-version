@@ -12,7 +12,7 @@ inputs:
   patch-flags-words:  # id of input
     description: 'Words that suggest update is Patch'
     required: false
-    default: 'PATCH, PRE-ALPHA, PRE-BETA, FIX, FIXING'
+    default: 'PATCH, PRE-ALPHA, PRE-BETA, FIX, FIXING, ADD, ADDING'
 outputs:
   output-version: # id of output
     description: 'Output version'
