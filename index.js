@@ -44,7 +44,7 @@ function incrementBasedOnCommitMessage(currVersion){
             throw Error('Update failed to select specific type');
         }
         else {
-            incrementedVersion = semver.inc(currVersion, update);
+            let incrementedVersion = semver.inc(currVersion, update);
             return incrementedVersion;
         }
     }
