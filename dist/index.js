@@ -9119,76 +9119,97 @@ const core = __nccwpck_require__(6024);
 const github = __nccwpck_require__(5016);
 const semver = __nccwpck_require__(4056);
 const fs = __nccwpck_require__(5747);
-let version;
-let update;
 
-//reading version from VERSION file
-try {
-    if(!fs.existsSync('./VERSION')) {
-        fs.writeFileSync('./VERSION', '1.0.0');
+let initialVersion = getVersionFromFile('./VERSION');
+console.log("Initial Version from VERSION file is : "+initialVersion);
+let incrementedVersion = incrementBasedOnCommitMessage(initialVersion);
+console.log("Incremented version based on commit message is : "+incrementedVersion);
+setOutputAndChangeFile(incrementedVersion, './VERSION');
+
+function getVersionFromFile(filePath){
+    try {
+        let version;
+        if (!fs.existsSync(filePath)) {
+            fs.writeFileSync(filePath, '1.0.0');
+        }
+        const data = fs.readFileSync(filePath, 'utf8');
+        if (semver.valid(data) === null) {
+            throw Error('Invalid initial version into VERSION file');
+        }
+        else { 
+            version = data;
+        }
+        return version;
+    } catch (error) {
+        core.setFailed(error.message);
     }
-    const data = fs.readFileSync('./VERSION', 'utf8');
-    if(semver.valid(data) === null) throw Error('Invalid initial version into VERSION file');
-    else version = data;
-} catch (error) {
-    core.setFailed(error.message);
 }
 
-//Incremention version
-try {
-    const event = github.context.payload;
 
-    if (!event.commits) {
-        throw Error('Couldn\'t find any commits in this event, incrementing patch version...');
+function incrementBasedOnCommitMessage(currVersion){
+    try {
+        const event = github.context.payload;
+    
+        if (!event.commits) {
+            throw Error('Couldn\'t find any commits in this event, incrementing patch version...');
+        }
+        const message = event.commits ? event.commits.map(commit => commit.message) : '';
+        console.log('Commit message : ' + message);
+    
+        let update = updateTypeCheck(message);
+        if (update === undefined || update === null) {
+            throw Error('Update failed to select specific type');
+        }
+        else {
+            incrementedVersion = semver.inc(currVersion, update);
+            return incrementedVersion;
+        }
     }
-    const message = event.commits ? event.commits.map(commit => commit.message) : '';
-    console.log('Commit message : ' + message);
-
-    update = updateTypeCheck(message);
-    if(update === undefined || update === null) throw Error('Update failed to select specific type');
-    else{version = semver.inc(version, update);
-    console.log('Version after increment : ' + version);}
-}
-catch (error) {
-    core.setFailed(error.message);
-}
-
-//Output and change VERSION
-try{
-    if(semver.valid(version) === null) throw Error('Final output version isnt valid');
-    else{
-    core.setOutput('output-version', version);
-    fs.writeFileSync('./VERSION', version);
+    catch (error) {
+        core.setFailed(error.message);
     }
-}catch (error) {
-    core.setFailed(error.message);
+} 
+
+function setOutputAndChangeFile(incrementedVersion, filePath){
+    try {
+        if (semver.valid(incrementedVersion) === null) {
+            throw Error('Final output version isnt valid');
+        }
+        else {
+            core.setOutput('output-version', incrementedVersion);
+            fs.writeFileSync(filePath, incrementedVersion);
+        }
+    } catch (error) {
+        core.setFailed(error.message);
+    }
 }
 
-function updateTypeCheck(message){
+function updateTypeCheck(message) {
     let patchWords = core.getInput('patch-flags-words');
     let patchWordsArray = patchWords.split(',');
+    let update;
     patchWordsArray.forEach(word => {
-        if(String(message).toUpperCase().includes(word)){
+        if (String(message).toUpperCase().includes(word)) {
             update = 'patch';
-        }     
+        }
     })
 
     let minorWords = core.getInput('minor-flags-words');
     let minorWordsArray = minorWords.split(',');
     minorWordsArray.forEach(word => {
-        if(String(message).toUpperCase().includes(word)){
+        if (String(message).toUpperCase().includes(word)) {
             update = 'minor';
-        }     
+        }
     })
 
     let majorWords = core.getInput('major-flags-words');
     let majorWordsArray = majorWords.split(',');
     majorWordsArray.forEach(word => {
-        if(String(message).toUpperCase().includes(word)){
+        if (String(message).toUpperCase().includes(word)) {
             update = 'major';
-        }     
+        }
     })
-   
+
     return update;
 }
 })();
