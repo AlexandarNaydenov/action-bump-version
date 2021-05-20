@@ -22,17 +22,7 @@ try {
     const message = event.commits ? event.commits.map(commit => commit.message) : [];
     console.log('Message : ' + message);
 
-    let majorWords = core.getInput('major-flags-words');
-    let majorWordsArray = majorWords.split(',');
-    let update;
-    majorWordsArray.forEach(word => {
-        if(String(message).toUpperCase().includes(word)){
-            update = 'major';
-        }     
-    })
-   
-    console.log('String to up : '+String(message).toUpperCase());
-    console.log('Update : ' + update);
+    update = updateTypeCheck(message);
     version = semver.inc(version, update);
     console.log('Version after increment : ' + version);
 }
@@ -48,4 +38,36 @@ try{
 
 }catch (error) {
     core.setFailed(error.message);
+}
+
+function updateTypeCheck(message){
+    let patchWords = core.getInput('patch-flags-words');
+    let patchWordsArray = patchWords.split(',');
+    let update;
+    patchWordsArray.forEach(word => {
+        if(String(message).toUpperCase().includes(word)){
+            update = 'patch';
+        }     
+    })
+
+    let minorWords = core.getInput('minor-flags-words');
+    let minorWordsArray = minorWords.split(',');
+    let update;
+    minorWordsArray.forEach(word => {
+        if(String(message).toUpperCase().includes(word)){
+            update = 'minor';
+        }     
+    })
+
+    let majorWords = core.getInput('major-flags-words');
+    let majorWordsArray = majorWords.split(',');
+    let update;
+    majorWordsArray.forEach(word => {
+        if(String(message).toUpperCase().includes(word)){
+            update = 'major';
+        }     
+    })
+   
+    console.log('String to up : '+String(message).toUpperCase());
+    console.log('Update : ' + update);
 }
