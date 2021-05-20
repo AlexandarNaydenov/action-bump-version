@@ -22,7 +22,15 @@ try {
     const message = event.commits ? event.commits.map(commit => commit.message) : [];
     console.log(message);
 
-    version = semver.inc(version, 'minor');
+    let majorWords = core.getInput('major-flags-words');
+    let update;
+    majorWords.forEach(element => {
+        if(String(message).toUpperCase().includes(String(element))){
+            update = "major";
+        }
+    });
+
+    version = semver.inc(version, update);
 }
 catch (error) {
     core.setFailed(error.message);
