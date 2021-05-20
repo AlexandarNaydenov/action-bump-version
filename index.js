@@ -24,11 +24,9 @@ try {
 
     let majorWords = core.getInput('major-flags-words');
     let update;
-    majorWords.forEach(element => {
-        if(String(message).toUpperCase().includes(String(element))){
-            update = "major";
-        }
-    });
+    if(String(message).toUpperCase().includes(majorWords)){
+        update = 'major';
+    }
 
     version = semver.inc(version, update);
 }

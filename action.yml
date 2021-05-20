@@ -4,15 +4,15 @@ inputs:
   major-flags-words:  # id of input
     description: 'Words that suggest update is Major'
     required: false
-    default: ['MAJOR']
+    default: 'MAJOR'
   minor-flags-words:  # id of input
     description: 'Words that suggest update is Minor'
     required: false
-    default: ['MINOR']
+    default: 'MINOR'
   patch-flags-words:  # id of input
     description: 'Words that suggest update is Patch'
     required: false
-    default: ['PATCH']
+    default: 'PATCH'
 outputs:
   output-version: # id of output
     description: 'Output version'
