@@ -7,6 +7,9 @@ let update;
 
 //reading version from VERSION file
 try {
+    if(!fs.existsSync('./VERSION')) {
+        fs.writeFileSync('./VERSION', '1.0.0');
+    }
     const data = fs.readFileSync('./VERSION', 'utf8');
     if(semver.valid(data) === null) throw Error('Invalid initial version into VERSION file');
     else version = data;
