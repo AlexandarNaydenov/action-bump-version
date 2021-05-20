@@ -8,24 +8,26 @@ let update;
 //reading version from VERSION file
 try {
     const data = fs.readFileSync('./VERSION', 'utf8');
-    version = data;
+    if(semver.valid(data) === null) throw Error('Invalid initial version into VERSION file');
+    else version = data;
 } catch (error) {
     core.setFailed(error.message);
 }
 
 //Incremention version
 try {
-    const event = github.context.payload
+    const event = github.context.payload;
 
     if (!event.commits) {
-        console.log('Couldn\'t find any commits in this event, incrementing patch version...')
+        throw Error('Couldn\'t find any commits in this event, incrementing patch version...');
     }
-    const message = event.commits ? event.commits.map(commit => commit.message) : [];
-    console.log('Message : ' + message);
+    const message = event.commits ? event.commits.map(commit => commit.message) : '';
+    console.log('Commit message : ' + message);
 
     update = updateTypeCheck(message);
-    version = semver.inc(version, update);
-    console.log('Version after increment : ' + version);
+    if(update === undefined || update === null) throw Error('Update failed to select specific type');
+    else{version = semver.inc(version, update);
+    console.log('Version after increment : ' + version);}
 }
 catch (error) {
     core.setFailed(error.message);
@@ -33,10 +35,11 @@ catch (error) {
 
 //Output and change VERSION
 try{
-
+    if(semver.valid(version) === null) throw Error('Final output version isnt valid');
+    else{
     core.setOutput('output-version', version);
     fs.writeFileSync('./VERSION', version);
-
+    }
 }catch (error) {
     core.setFailed(error.message);
 }
@@ -67,6 +70,4 @@ function updateTypeCheck(message){
     })
    
     return update;
-    console.log('String to up : '+String(message).toUpperCase());
-    console.log('Update : ' + update);
 }
