@@ -3,6 +3,7 @@ const github = require('@actions/github');
 const semver = require('semver');
 const fs = require('fs');
 let version;
+let update;
 
 //reading version from VERSION file
 try {
@@ -43,7 +44,6 @@ try{
 function updateTypeCheck(message){
     let patchWords = core.getInput('patch-flags-words');
     let patchWordsArray = patchWords.split(',');
-    let update;
     patchWordsArray.forEach(word => {
         if(String(message).toUpperCase().includes(word)){
             update = 'patch';
@@ -52,7 +52,6 @@ function updateTypeCheck(message){
 
     let minorWords = core.getInput('minor-flags-words');
     let minorWordsArray = minorWords.split(',');
-    let update;
     minorWordsArray.forEach(word => {
         if(String(message).toUpperCase().includes(word)){
             update = 'minor';
@@ -61,7 +60,6 @@ function updateTypeCheck(message){
 
     let majorWords = core.getInput('major-flags-words');
     let majorWordsArray = majorWords.split(',');
-    let update;
     majorWordsArray.forEach(word => {
         if(String(message).toUpperCase().includes(word)){
             update = 'major';
