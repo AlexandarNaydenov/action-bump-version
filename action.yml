@@ -18,4 +18,4 @@ outputs:
     description: 'Output version'
 runs:
   using: 'node12'
-  main: 'allInOne.js'
+  main: 'dist/index.js'
