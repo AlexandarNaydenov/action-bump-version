@@ -20,15 +20,16 @@ try {
         console.log('Couldn\'t find any commits in this event, incrementing patch version...')
     }
     const message = event.commits ? event.commits.map(commit => commit.message) : [];
-    console.log(message);
+    console.log('Message : ' + message);
 
     let majorWords = core.getInput('major-flags-words');
     let update;
     if(String(message).toUpperCase().includes(majorWords)){
         update = 'major';
     }
-
+    console.log('Update : ' + update);
     version = semver.inc(version, update);
+    console.log('Version : ' + version);
 }
 catch (error) {
     core.setFailed(error.message);
